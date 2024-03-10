@@ -5,12 +5,11 @@ import com.example.orderrelex.dto.CreateOrderDto;
 import com.example.orderrelex.dto.ProductCountDto;
 import com.example.orderrelex.entity.OrderEntity;
 import com.example.orderrelex.repository.OrderRepository;
-import com.example.orderrelex.rest.RestConsumer;
+import com.example.orderrelex.rest.RestConsumerProductImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
-    private final RestConsumer restConsumer;
+    private final RestConsumerProductImpl restConsumerProductImpl;
     @Override
     public OrderEntity createOrder(CreateOrderDto createOrderDto) {
         OrderEntity order = OrderEntity
@@ -27,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
                 .employeeId(createOrderDto.getEmployeeId())
                 .productId(createOrderDto.getProductId())
                 .count(createOrderDto.getCount())
-                .createTime(LocalDateTime.now())
+                .createTime(LocalDate.now())
                 .build();
 
         orderRepository.save(order);
@@ -38,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
                 .count(createOrderDto.getCount())
                 .build();
 
-        restConsumer.setProductCount(product);
+        restConsumerProductImpl.setProductCount(product);
 
         return order;
     }
@@ -48,7 +47,8 @@ public class OrderServiceImpl implements OrderService {
         List<OrderEntity> addProductList = new ArrayList<>();
 
         for(OrderEntity order : orderRepository.findAll()) {
-            if(order.getCreateTime().isAfter(periodDate(startDate)) && order.getCreateTime().isBefore(periodDate(endDate))) {
+            if(order.getCreateTime().isAfter(LocalDate.parse(startDate))
+                    && order.getCreateTime().isBefore(LocalDate.parse(endDate))) {
                 addProductList.add(order);
             }
         }
@@ -61,28 +61,12 @@ public class OrderServiceImpl implements OrderService {
         List<OrderEntity> addProductList = new ArrayList<>();
 
         for(OrderEntity order : orderRepository.findAllByEmployeeId(employeeId)) {
-            if(order.getCreateTime().isAfter(periodDate(startDate)) && order.getCreateTime().isBefore(periodDate(endDate))) {
+            if(order.getCreateTime().isAfter(LocalDate.parse(startDate))
+                    && order.getCreateTime().isBefore(LocalDate.parse(endDate))) {
                 addProductList.add(order);
             }
         }
 
         return new CollectedOrderDto(addProductList);
-    }
-
-    /**
-     * перевод введенной даты в удобный для обработки формат
-     * @param periodDate дата в формате String
-     * @return дата в формате LocalDateTime
-     */
-    private LocalDateTime periodDate(String periodDate) {
-        String[] dateList = periodDate.split("\\.");
-
-        LocalDate datePeriod = LocalDate.of(
-                Integer.parseInt(dateList[2]),
-                Integer.parseInt(dateList[1]),
-                Integer.parseInt(dateList[0])
-        );
-
-        return datePeriod.atStartOfDay();
     }
 }

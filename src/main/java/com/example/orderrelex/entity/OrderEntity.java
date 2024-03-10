@@ -3,7 +3,7 @@ package com.example.orderrelex.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * класс для добавления собранных товаров в базу данных
@@ -28,5 +28,5 @@ public class OrderEntity {
 
     @Column(name = "create_time")
 
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 }
