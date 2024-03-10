@@ -7,6 +7,8 @@ import com.example.orderrelex.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
@@ -36,8 +38,8 @@ public class OrderController {
      */
     @GetMapping("/collectedOrders/{startDate}/{endDate}")
     public CollectedOrderDto collectedOrders(
-            @PathVariable String startDate,
-            @PathVariable String endDate
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate
     ) {
         return orderService.collectedOrders(startDate, endDate);
     }
@@ -52,8 +54,8 @@ public class OrderController {
      */
     @GetMapping("/collectedOrders/{startDate}/{endDate}/{employeeId}")
     public CollectedOrderDto collectedOrdersByEmployeeId(
-            @PathVariable String startDate,
-            @PathVariable String endDate,
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate,
             @PathVariable Long employeeId
     ) {
         return orderService.collectedOrdersByEmployeeId(startDate, endDate, employeeId);

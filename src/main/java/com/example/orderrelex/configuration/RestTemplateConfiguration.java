@@ -1,4 +1,4 @@
-package com.example.orderrelex;
+package com.example.orderrelex.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

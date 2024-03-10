@@ -14,10 +14,10 @@ import org.springframework.web.client.RestTemplate;
 public class RestConsumerProductImpl implements RestConsumerProduct {
     private final RestTemplate restTemplate;
 
-    @Value("${spring.service-url}")
+    @Value("${service.url}")
     private String serviceUrl;
 
-    @Value("${service.urlAdd}")
+    @Value("${service-location.url.add-product}")
     private String endUrl;
 
     @Override

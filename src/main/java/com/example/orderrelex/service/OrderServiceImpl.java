@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,29 +42,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public CollectedOrderDto collectedOrders(String startDate, String endDate) {
-        List<OrderEntity> addProductList = new ArrayList<>();
-
-        for(OrderEntity order : orderRepository.findAll()) {
-            if(order.getCreateTime().isAfter(LocalDate.parse(startDate))
-                    && order.getCreateTime().isBefore(LocalDate.parse(endDate))) {
-                addProductList.add(order);
-            }
-        }
+    public CollectedOrderDto collectedOrders(LocalDate startDate, LocalDate endDate) {
+        List<OrderEntity> addProductList = orderRepository.findAllByCreateTimeAfterAndCreateTimeBefore(
+                startDate,
+                endDate);
 
         return new CollectedOrderDto(addProductList);
     }
 
     @Override
-    public CollectedOrderDto collectedOrdersByEmployeeId(String startDate, String endDate, Long employeeId) {
-        List<OrderEntity> addProductList = new ArrayList<>();
-
-        for(OrderEntity order : orderRepository.findAllByEmployeeId(employeeId)) {
-            if(order.getCreateTime().isAfter(LocalDate.parse(startDate))
-                    && order.getCreateTime().isBefore(LocalDate.parse(endDate))) {
-                addProductList.add(order);
-            }
-        }
+    public CollectedOrderDto collectedOrdersByEmployeeId(LocalDate startDate, LocalDate endDate, Long employeeId) {
+        List<OrderEntity> addProductList = orderRepository.findAllByEmployeeIdAndCreateTimeAfterAndCreateTimeBefore(
+                employeeId,
+                startDate,
+                endDate
+        );
 
         return new CollectedOrderDto(addProductList);
     }
