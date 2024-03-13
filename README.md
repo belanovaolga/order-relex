@@ -22,7 +22,7 @@ _Примеры привожу в Postman_
 * есть API, позволяющий добавить произведенный товар в хранилище\
   _В качестве хранилища используется PostgreSQL_
 
-![Order Create .png](src%2Fmain%2Fresources%2Fimages%2FLogin%20Page.png)
+![Order Create .png](src%2Fmain%2Fresources%2Fimages%2FOrder%20Create.png)
 
 ![Order Create DB before .png](src%2Fmain%2Fresources%2Fimages%2FOrder%20Create%20DB%20before.png)
 
